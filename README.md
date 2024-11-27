@@ -1,9 +1,11 @@
-# Install Alpine Linux on Termux using QEMU System
+# Install Alpine Linux VM on Termux using QEMU System
 
 > For this case, we will install ** Alpine Linux architecture x86_64 in the Virtual version **. Download the latest version of the virtual ISO from the Alpine Linux website. Go to the official website https://alpinelinux.org/downloads/
 
 > Note: You can run the script ```install-alpine.sh``` to skip most commands.
 Just remember you must have git installed to do ```git clone``` to the repository
+
+> Full OS VMs are more fully-featured since they run the full linux kernel, but compiled programs, or proot container will be faster and have better access to GPU.
 
 
 ## Steps before installing Alpine Linux:
