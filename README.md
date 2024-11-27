@@ -81,6 +81,6 @@ qemu-system-x86_64 -smp 1,cores=2 -m 2048 \
   -nographic
 ```
 
-## For more information about the commands seen here, visit https://wiki.alpinelinux.org/wiki/Qemu
+## For more information about the commands seen here, visit https://wiki.archlinux.org/title/QEMU
 
-## Qemu commands based on https://youtu.be/RL96VSKzAQo
+*Qemu commands based on https://youtu.be/RL96VSKzAQo*
