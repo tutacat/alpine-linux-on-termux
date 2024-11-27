@@ -1,69 +1,63 @@
-# Install Alpine Linux on Termux using QEMU
+# Install Alpine Linux on Termux using QEMU System
 
 > For this case, we will install ** Alpine Linux architecture x86_64 in the Virtual version **. Download the latest version of the virtual ISO from the Alpine Linux website. Go to the official website https://alpinelinux.org/downloads/
-
-> This was only tested on Xiaomi Redmi Note 8.
 
 > Note: You can run the script ```install-alpine.sh``` to skip most commands.
 Just remember you must have git installed to do ```git clone``` to the repository
 
 
 ## Steps before installing Alpine Linux:
-> ### TERMUX
-* #### 1. Download and install F-Droid: https://f-droid.org/F-Droid.apk
-* #### 2. Search for Termux in F-Droid
-* #### 3. Install and open Termux
-* #### 4. Setup Termux packages:
+
+**Termux:**  
+* **Download and install F-Droid** or Neo Store: https://f-droid.org/F-Droid.apk
+* Install Termux from F-Droid Repo
+* Open Termux
+
+
+* **Install/upgrade needed packages:**
 ```
-pkg update -y
-```
-```
-pkg upgrade -y
-```
-```
-pkg install wget -y
+pkg upgrade -y curl qemu-system-x86-64-headless qemu-utils
 ```
 
-> ### QEMU - Alpine Linux
-* ####  Install QEMU and download Virtual ISO Alpine Linux
+> Make a directory to store installer and storage disk.
 ```
-pkg install qemu-system-x86-64-headless qemu-utils -y
-```
-```
-cd $HOME
-```
-```
-mkdir alpine-linux
-```
-```
-cd alpine-linux/
-```
-```
-wget <VIRTUAL_ISO_URL>
-```
-```
-wget https://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-virt-3.14.0-x86_64.iso
+mkdir -p "$HOME/alpine-linux"
+cd "$HOME/alpine-linux"
 ```
 
-## Install Alpine Linux using Qemu
-* #### Create the Virtual Machine
+> Download Alpine or your OS of choice
+```
+curl -LO <VIRTUAL_ISO_URL>
+ls
+```
+```
+curl -L -o ./alpine-virt-x86-64.iso https://dl-cdn.alpinelinux.org/alpine/v3.18/releases/x86_64/alpine-virt-3.18.0-x86_64.iso
+```
+
+## Install Alpine Linux using Qemu  
+* Create the Virtual Machine disk 
 ```
 qemu-img create -f qcow2 alpine.qcow2 15G
 ```
+
+## Run the installer
 ```
-qemu-system-x86_64 -smp 2 -m 2048 \
+qemu-system-x86_64 -smp 1,cores=2 -m 2048 \
+  -accel tcg,thread=multi \
   -drive file=alpine.qcow2,if=virtio \
   -netdev user,id=n1,hostfwd=tcp::2222-:22 \
   -device virtio-net,netdev=n1 \
   -cdrom <VIRTUAL_ISO_NAME.iso> -boot d \
   -nographic
 ```
+
 ```
-qemu-system-x86_64 -smp 2 -m 2048 \
+qemu-system-x86_64 -smp 1,cores=2 -m 2048 \
+  -accel tcg,thread=multi \
   -drive file=alpine.qcow2,if=virtio \
   -netdev user,id=n1,hostfwd=tcp::2222-:22 \
   -device virtio-net,netdev=n1 \
-  -cdrom alpine-virt-3.14.0-x86_64.iso -boot d \
+  -cdrom alpine-virt-x86_64.iso -boot d \
   -nographic
 ```
 
@@ -79,7 +73,8 @@ setup-alpine
 * #### Booting the Virtual Machine
 After the installation QEMU can be started from disk image ```(-boot c)``` without CDROM.
 ```
-qemu-system-x86_64 -smp 2 -m 2048 \
+qemu-system-x86_64 -smp 1,cores=2 -m 2048 \
+  -accel tcg,thread=multi \
   -drive file=alpine.qcow2,if=virtio \
   -netdev user,id=n1,hostfwd=tcp::2222-:22 \
   -device virtio-net,netdev=n1 \
